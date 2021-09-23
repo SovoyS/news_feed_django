@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block title %}testnewslist{% endblock %}
+
+{% block content %}
+    <div class="container" align="center">
+        <form action="/news_feed/" method="post" class="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div>{{ form }}</div>
+            <input type="submit" value="Добавить новость">
+        </form>
+    </div>
+{% endblock %}

@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% block title %}Лента новостей{% endblock %}
+
+{% block content %}
+    <div class="container" align="center">
+        <form action="/news_feed/create/">
+            <button>Создать новость</button>
+        </form>
+
+        {% for post in news_list.object_list %}
+            <form method="POST">
+                <div class="news_list">
+                    <h1>{{ post.news_title }}</h1>
+                    {% if post.news_image %}
+                        <img src="{{ post.news_image.url }}" height="500">
+                    {% else %}
+                    {% endif %}
+                    <p>{{ post.news_text }}</p>
+                    <p align="right">{{ post.date }}</p>
+                </div>
+            </form>
+        {% endfor %}
+
+        <nav aria-label="...">
+            <ul class="pagination">
+                {% for n in news_list.paginator.page_range %}
+                    {% if news_list == n %}
+                        <li class="page-item active" aria-current="page">
+                            <a class="page-link" href="?page={{ n }}">{{ n }}</a>
+                        </li>
+                    {% else %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ n }}">{{ n }}</a>
+                        </li>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+        </nav>
+
+        <form action="/news_feed/" method="post" class="post">
+            {% csrf_token %}
+            <label>Выбор количества новостей, выводимых на страницу:</label>
+            <select name="number_of_news">
+                <option selected="selected" value="10">10</option>
+                <option value="20">20</option>
+                <option value="50">50</option>
+            </select>
+            <input type="submit" value="подтвердить">
+        </form>
+
+    </div>
+{% endblock %}
